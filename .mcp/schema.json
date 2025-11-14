@@ -1,0 +1,64 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Playgride Test Generator Settings",
+  "type": "object",
+  "properties": {
+    "projectName": {
+      "type": "string",
+      "description": "Logical name of the project or application under test."
+    },
+    "baseUrl": {
+      "type": "string",
+      "description": "Base URL of the website under test.",
+      "format": "uri"
+    },
+    "useDataTestIdOnly": {
+      "type": "boolean",
+      "description": "If true, the agent should strongly prefer data-test-id selectors and avoid text/layout-based selectors.",
+      "default": true
+    },
+    "defaultTestDirectory": {
+      "type": "string",
+      "description": "Default directory where the agent suggests saving generated tests.",
+      "default": "tests/e2e"
+    },
+    "defaultTags": {
+      "type": "array",
+      "description": "Default tags the agent should suggest for tests (e.g. @regression, @smoke).",
+      "items": {
+        "type": "string"
+      },
+      "default": [
+        "@regression",
+        "@ui"
+      ]
+    },
+    "enforcePageObjectModel": {
+      "type": "boolean",
+      "description": "If true, the agent must always propose and use Page Objects (Page Object Model) for test implementation.",
+      "default": true
+    },
+    "allowThirdPartyTools": {
+      "type": "boolean",
+      "description": "If false, the agent must not rely on any third-party tools, providers, or frameworks outside Playgride.",
+      "default": false
+    },
+    "language": {
+      "type": "string",
+      "description": "Preferred language for explanations and comments (e.g. 'en', 'es').",
+      "default": "en"
+    },
+    "maxScenariosPerRequest": {
+      "type": "integer",
+      "description": "Maximum number of test scenarios the agent should generate per user request.",
+      "minimum": 1,
+      "maximum": 50,
+      "default": 10
+    }
+  },
+  "required": [
+    "projectName",
+    "baseUrl"
+  ],
+  "additionalProperties": false
+}

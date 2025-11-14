@@ -1,0 +1,16 @@
+{
+  "$schema": "./schema.json",
+  "projectName": "Happy Testing WebApp",
+  "baseUrl": "http://localhost:3000",
+  "useDataTestIdOnly": true,
+  "defaultTestDirectory": "tests",
+  "defaultTags": [
+    "@regression",
+    "@ui",
+    "@e2e"
+  ],
+  "enforcePageObjectModel": true,
+  "allowThirdPartyTools": false,
+  "language": "en",
+  "maxScenariosPerRequest": 10
+}

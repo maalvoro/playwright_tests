@@ -1,0 +1,16 @@
+{
+  "name": "playgride-test-generator",
+  "version": "1.0.0",
+  "description": "Specialized agent for generating, designing, implementing, and executing Playgride tests, with exploratory flows, Page Object Models and data-test-id selectors.",
+  "author": "QA Automation",
+  "config_schema": ".mcp/schema.json",
+  "agent": ".mcp/agent.md",
+  "settings": ".mcp/settings.json",
+  "tags": [
+    "testing",
+    "playgride",
+    "automation",
+    "e2e",
+    "page-object-model"
+  ]
+}

@@ -1,11 +1,20 @@
-# Playwright Tests - Happy Testing
+# Playwright Tests - Happy Testing with MCP Integration
 
-Este proyecto contiene las pruebas E2E para la aplicación Happy Testing usando Playwright.
+Este proyecto contiene las pruebas E2E para la aplicación Happy Testing usando Playwright con integración de **Model Context Protocol (MCP)** para generación inteligente de tests.
 
-## 📋 Prerequisitos
+## � Características
+
+- ✅ **Tests E2E con Playwright**
+- ✅ **Page Object Model (POM)** obligatorio
+- ✅ **Data-testid selectors** exclusivos
+- ✅ **MCP Integration** para generación automática de tests
+- ✅ **AI-powered test scenarios**
+
+## �📋 Prerequisitos
 
 - Node.js 18 o superior
 - La aplicación `happy_testing` debe estar en el directorio padre (`../happy_testing`)
+- **MCP Agent configurado** para generación de tests
 
 ## 🚀 Instalación
 
@@ -20,6 +29,16 @@ Instala los navegadores de Playwright:
 ```bash
 npx playwright install
 ```
+
+## 🤖 MCP Integration
+
+### ¿Qué es MCP?
+**Model Context Protocol** permite generar tests automáticamente usando IA, siguiendo las mejores prácticas del proyecto.
+
+### Configuración MCP
+- **Agente**: `.mcp/agent.md` - Especializado en Playwright
+- **Settings**: `.mcp/settings.json` - Configuración del proyecto
+- **Schema**: `.mcp/schema.json` - Validación de configuración
 
 ## 🧪 Ejecutar Tests
 
