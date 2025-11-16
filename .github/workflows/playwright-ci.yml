@@ -35,6 +35,8 @@ jobs:
       - name: Checkout tests repo
         uses: actions/checkout@v5
         with:
+          repository: maalvoro/happy_testing
+          path: app
           # checkout the current repo (playwright_tests)
 
       - name: Checkout app repository (happy_testing) into ./happy_testing
