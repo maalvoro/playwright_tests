@@ -54,7 +54,8 @@ jobs:
       - name: Install app dependencies
         run: |
           cd happy_testing
-          npm ci
+          # Try npm ci first, fallback to npm install if lockfile is missing or invalid
+          npm ci || npm install
 
       - name: Run DB migrations (app)
         run: |
