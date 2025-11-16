@@ -1,0 +1,82 @@
+name: Playwright Tests
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    name: Run Playwright tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    services:
+      postgres:
+        image: postgres:18
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: myapp_test
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/myapp_test
+
+    steps:
+      - name: Checkout tests repo
+        uses: actions/checkout@v5
+        with:
+          # checkout the current repo (playwright_tests)
+
+      - name: Checkout app repository (happy_testing) into ./happy_testing
+        uses: actions/checkout@v5
+        with:
+          repository: maalvoro/happy_testing
+          path: happy_testing
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+
+      - name: Install app dependencies
+        run: |
+          cd happy_testing
+          npm ci
+
+      - name: Run DB migrations (app)
+        run: |
+          echo "Waiting for Postgres to be ready..."
+          until pg_isready -h postgres -p 5432 -U postgres; do sleep 2; done
+          cd happy_testing
+          npm run db:migrate
+
+      - name: Install test deps (root)
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        run: npm run test:e2e
+        env:
+          DATABASE_URL: ${{ env.DATABASE_URL }}
+
+      - name: Upload Playwright HTML report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
