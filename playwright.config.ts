@@ -35,8 +35,11 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: 'cd ../happy_testing && npm run dev',
+    command: process.env.CI 
+      ? 'cd happy_testing && npm run dev'  // En CI el directorio está en ./happy_testing
+      : 'cd ../happy_testing && npm run dev', // En local está en ../happy_testing
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
+    timeout: 120 * 1000, // 2 minutos timeout
   },
 });

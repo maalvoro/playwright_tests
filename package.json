@@ -33,6 +33,7 @@
   "homepage": "https://github.com/maalvoro/playwright_tests#readme",
   "devDependencies": {
     "@playwright/test": "^1.56.1",
+    "@types/node": "^24.10.1",
     "typescript": "^5.9.3"
   },
   "dependencies": {
