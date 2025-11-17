@@ -87,10 +87,3 @@ jobs:
           name: playwright-report
           path: playwright-report/
           retention-days: 7      # opcional: cuántos días guardarlo
-      - name: Add summary
-        if: always()
-        run: |
-          echo "## Playwright E2E" >> $GITHUB_STEP_SUMMARY
-          echo "- Status del job: ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
-        env:
-          DATABASE_URL: ${{ env.DATABASE_URL }}
