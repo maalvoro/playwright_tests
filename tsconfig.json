@@ -1,0 +1,40 @@
+{{
+
+  "compilerOptions": {  "compilerOptions": {
+
+    "target": "ES2022",    "target": "ES2022",
+
+    "lib": ["es2022"],    "lib": ["ES2022", "dom"],
+
+    "module": "commonjs",    "module": "commonjs",
+
+    "moduleResolution": "node",    "moduleResolution": "node",
+
+    "esModuleInterop": true,    "esModuleInterop": true,
+
+    "allowSyntheticDefaultImports": true,    "allowSyntheticDefaultImports": true,
+
+    "strict": true,    "strict": true,
+
+    "skipLibCheck": true,    "skipLibCheck": true,
+
+    "forceConsistentCasingInFileNames": true,    "forceConsistentCasingInFileNames": true,
+
+    "types": ["node", "@playwright/test"]    "resolveJsonModule": true,
+
+  },    "outDir": "./dist",
+
+  "include": [    "rootDir": ".",
+
+    "tests/**/*",    "types": ["node"]
+
+    "pages/**/*",   },
+
+    "playwright.config.ts"  "include": [
+
+  ]    "tests/**/*",
+
+}    "pages/**/*",
+    "playwright.config.ts"
+  ]
+}
