@@ -163,6 +163,10 @@ test.describe('Dishes Management', () => {
     });
     
     await expect(page).toHaveURL(/\/dishes$/);
+    
+    // Wait for the page to update with the new data
+    await dishesPage.waitForDishListUpdate();
+    
     await expect(dishesPage.findDishByName(updatedName)).toBeVisible();
   });
 

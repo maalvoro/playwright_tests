@@ -29,7 +29,11 @@ export class EditDishPage extends BasePage {
   async updateDishAndWaitForRedirect(data: { name: string; description: string }) {
     await this.nameInput.fill(data.name);
     await this.descriptionInput.fill(data.description);
-    await this.submitButton.click();
-    await this.waitForURL(/\/dishes$/);
+    
+    // Submit and wait for navigation
+    await Promise.all([
+      this.page.waitForURL(/\/dishes$/, { timeout: 10000 }),
+      this.submitButton.click()
+    ]);
   }
 }
