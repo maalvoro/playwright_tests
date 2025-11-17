@@ -29,17 +29,13 @@ jobs:
 
     env:
       NODE_ENV: test
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/myapp_test
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/myapp_test
 
     steps:
       - name: Checkout tests repo
         uses: actions/checkout@v5
-        with:
-          repository: maalvoro/happy_testing
-          path: app
-          # checkout the current repo (playwright_tests)
 
-      - name: Checkout app repository (happy_testing) into ./happy_testing
+      - name: Checkout app repository (happy_testing)
         uses: actions/checkout@v5
         with:
           repository: maalvoro/happy_testing
@@ -51,17 +47,27 @@ jobs:
         with:
           node-version: 'lts/*'
 
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client
+
       - name: Install app dependencies
         run: |
           cd happy_testing
           # Try npm ci first, fallback to npm install if lockfile is missing or invalid
           npm ci || npm install
 
-      - name: Run DB migrations (app)
+      - name: Wait for Postgres and run DB migrations
+        env:
+          PGPASSWORD: postgres
         run: |
           echo "Waiting for Postgres to be ready..."
-          until pg_isready -h postgres -p 5432 -U postgres; do sleep 2; done
+          # Wait for postgres with timeout
+          timeout 30 bash -c 'until pg_isready -h localhost -p 5432 -U postgres; do sleep 2; done'
+          echo "Postgres is ready!"
           cd happy_testing
+          echo "Running migrations..."
           npm run db:migrate
 
       - name: Install test deps (root)
