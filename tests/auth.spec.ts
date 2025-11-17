@@ -79,7 +79,7 @@ test.describe('Authentication', () => {
       password: password,
     });
     
-    // Ahora hacer login
+    // Ahora se hace login
     await loginPage.loginAndWaitForRedirect(email, password);
     
     // Debería redirigir a dishes

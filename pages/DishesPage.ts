@@ -36,9 +36,17 @@ export class DishesPage extends BasePage {
   }
 
   /**
-   * Find dish by name
+   * Find dish by name in the dishes grid
    */
   findDishByName(name: string) {
-    return this.page.getByText(name);
+    return this.dishesGrid.locator('[data-testid="dish-card"]').filter({ hasText: name });
+  }
+
+  /**
+   * Wait for dish list to be updated (useful after CRUD operations)
+   */
+  async waitForDishListUpdate() {
+    await this.page.waitForLoadState('networkidle');
+    await this.dishesGrid.waitFor({ state: 'visible' });
   }
 }
