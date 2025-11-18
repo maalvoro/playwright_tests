@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
-import { RegisterPage, LoginPage } from '../pages';
+import { RegisterPage, LoginPage } from '../../pages';
 
-test('setup authenticated state', async ({ page }) => {
+test('@ui setup authenticated state', async ({ page }) => {
   const registerPage = new RegisterPage(page);
   const loginPage = new LoginPage(page);
 

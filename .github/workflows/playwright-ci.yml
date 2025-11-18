@@ -8,7 +8,10 @@ on:
 
 jobs:
   test:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'e2e-tests'))
+    if: 
+        github.event_name == 'push' || 
+        (github.event_name == 'pull_request' && 
+        contains(github.event.pull_request.labels.*.name, 'e2e-tests'))
     name: Run Playwright tests
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -77,13 +80,26 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
-        run: npx playwright test --reporter=html
-      - name: Upload Playwright HTML report
-        # Se ejecuta aunque los tests fallen
-        if: always()             
+      - name: Run API tests
+        run: npx playwright test --grep @api --reporter=html
+
+      - name: Upload Playwright API HTML report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-api
           path: playwright-report/
-          retention-days: 7      # opcional: cuántos días guardarlo
+          retention-days: 7
+
+      - name: Run UI tests
+        run: npx playwright test --grep @ui --reporter=html
+
+      - name: Upload Playwright UI HTML report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-ui
+          path: playwright-report/
+          retention-days: 7
+
+

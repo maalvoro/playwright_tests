@@ -24,7 +24,7 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
       dependencies: ['setup'],
       // Importante: ignora auth.spec.ts aquí para que no falle por estar ya autenticado
-      testIgnore: /.*auth\.spec\.ts/,
+      testIgnore: [/.*auth\.spec\.ts/, /.*\.setup\.ts/],
     },
 
     // 3) proyecto separado sin sesión para probar login/register desde cero
