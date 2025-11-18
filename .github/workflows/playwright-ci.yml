@@ -81,39 +81,50 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run API tests
+        id: run_api
         if: contains(github.event.pull_request.labels.*.name, 'e2e-api')
+        continue-on-error: true
         run: npx playwright test --grep @api --reporter=html
 
       - name: Upload Playwright API HTML report
-        if: always()
+        if: steps.run_api.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-api
           path: playwright-report/
+          if-no-files-found: ignore
           retention-days: 7
 
+
       - name: Run UI tests
+        id: run_ui
         if: contains(github.event.pull_request.labels.*.name, 'e2e-ui')
+        continue-on-error: true
         run: npx playwright test --grep @ui --reporter=html
 
       - name: Upload Playwright UI HTML report
-        if: always()
+        if: steps.run_ui.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report-ui
           path: playwright-report/
+          if-no-files-found: ignore
           retention-days: 7
-          
+
+
       - name: Run ALL tests
+        id: run_all
         if: contains(github.event.pull_request.labels.*.name, 'e2e-all')
         run: npx playwright test --reporter=html
 
       - name: Upload Playwright HTML report
-        if: always()
+        if: steps.run_all.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-all
           path: playwright-report/
+          if-no-files-found: ignore
           retention-days: 7
+
 
 
