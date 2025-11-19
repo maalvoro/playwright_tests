@@ -13,25 +13,37 @@ export default defineConfig({
     baseURL: 'http://localhost:3000',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
+    // Ejecutar en modo headless por defecto (sin mostrar navegador)
+    headless: true,
   },
   projects: [
     // 1) corre primero y guarda la sesión
     { name: 'setup', testMatch: /.*\.setup\.ts/ },
 
-    // 2) proyecto principal autenticado (usa storageState del setup)
+    // 2) proyecto principal autenticado (usa storageState del setup) - Solo UI tests
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'], storageState: 'playwright/.auth/user.json' },
       dependencies: ['setup'],
-      // Importante: ignora auth.spec.ts aquí para que no falle por estar ya autenticado
-      testIgnore: [/.*auth\.spec\.ts/, /.*\.setup\.ts/],
+      // Importante: ignora auth.spec.ts y API tests aquí
+      testIgnore: [/.*auth\.spec\.ts/, /.*\.setup\.ts/, /.*\.api\.spec\.ts/],
     },
 
-    // 3) proyecto separado sin sesión para probar login/register desde cero
+    // 3) proyecto separado sin sesión para probar login/register desde cero - Solo UI tests
     {
       name: 'auth',
       testMatch: /.*auth\.spec\.ts/,
       use: { ...devices['Desktop Chrome'] },
+    },
+
+    // 4) proyecto para API tests - No requiere browser
+    {
+      name: 'api',
+      testMatch: /.*\.api\.spec\.ts/,
+      use: { 
+        // API tests don't need browser context, just APIRequestContext
+        baseURL: 'http://localhost:3000'
+      },
     },
   ],
   webServer: {
