@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { DishesPage, NewDishPage, EditDishPage, ViewDishPage } from '../pages';
+import { DishesPage, NewDishPage, EditDishPage, ViewDishPage } from '../../pages';
 
 test.describe('Dishes Management', () => {
   let dishesPage: DishesPage;
@@ -17,26 +17,26 @@ test.describe('Dishes Management', () => {
     await dishesPage.navigate();
   });
 
-  test('should display dishes list page correctly', async () => {
+  test('@ui should display dishes list page correctly', async () => {
     await expect(dishesPage.container).toBeVisible();
     await expect(dishesPage.header).toBeVisible();
     await expect(dishesPage.title).toHaveText('Sugerencias de Platillos');
     await expect(dishesPage.addButton).toBeVisible();
   });
 
-  test('should show empty state when no dishes', async () => {
+  test('@ui should show empty state when no dishes', async () => {
     if (await dishesPage.emptyMessage.isVisible()) {
       await expect(dishesPage.emptyMessage).toHaveText('No hay platillos registrados.');
     }
   });
 
-  test('should navigate to new dish form', async ({ page }) => {
+  test('@ui should navigate to new dish form', async ({ page }) => {
     await dishesPage.goToNewDish();
     await expect(page).toHaveURL(/\/dishes\/new/);
     await expect(newDishPage.form).toBeVisible();
   });
 
-  test('should create a new dish successfully', async ({ page }) => {
+  test('@ui should create a new dish successfully', async ({ page }) => {
     const dishName = `Test Dish ${Date.now()}`;
     
     await newDishPage.navigate();
@@ -54,7 +54,7 @@ test.describe('Dishes Management', () => {
     await expect(dishesPage.findDishByName(dishName)).toBeVisible();
   });
 
-  test('should add multiple steps to a dish', async ({ page }) => {
+  test('@ui should add multiple steps to a dish', async ({ page }) => {
     await newDishPage.navigate();
     await newDishPage.createDishAndWaitForRedirect({
       name: 'Multi-step Dish',
@@ -67,7 +67,7 @@ test.describe('Dishes Management', () => {
     await expect(page).toHaveURL(/\/dishes$/);
   });
 
-  test('should toggle quick prep checkbox', async () => {
+  test('@ui should toggle quick prep checkbox', async () => {
     await newDishPage.navigate();
     
     await expect(newDishPage.quickPrepCheckbox).not.toBeChecked();
@@ -77,7 +77,7 @@ test.describe('Dishes Management', () => {
     await expect(newDishPage.quickPrepCheckbox).not.toBeChecked();
   });
 
-  test('should display dish card with all information', async ({ page }) => {
+  test('@ui should display dish card with all information', async ({ page }) => {
     const dishName = `Card Test ${Date.now()}`;
     
     await newDishPage.navigate();
@@ -100,7 +100,7 @@ test.describe('Dishes Management', () => {
     await expect(dishCard.getByTestId('dish-time-badge')).toBeVisible();
   });
 
-  test('should navigate to view dish detail', async ({ page }) => {
+  test('@ui should navigate to view dish detail', async ({ page }) => {
     const dishName = `View Test ${Date.now()}`;
     
     await newDishPage.navigate();
@@ -120,7 +120,7 @@ test.describe('Dishes Management', () => {
     await expect(viewDishPage.container).toBeVisible();
   });
 
-  test('should navigate to edit dish', async ({ page }) => {
+  test('@ui should navigate to edit dish', async ({ page }) => {
     const dishName = `Edit Test ${Date.now()}`;
     
     await newDishPage.navigate();
@@ -140,7 +140,7 @@ test.describe('Dishes Management', () => {
     await expect(editDishPage.form).toBeVisible();
   });
 
-  test('should edit a dish successfully', async ({ page }) => {
+  test('@ui should edit a dish successfully', async ({ page }) => {
     const originalName = `Original ${Date.now()}`;
     const updatedName = `Updated ${Date.now()}`;
     
@@ -170,7 +170,7 @@ test.describe('Dishes Management', () => {
     await expect(dishesPage.findDishByName(updatedName)).toBeVisible();
   });
 
-  test('should delete a dish', async ({ page }) => {
+  test('@ui should delete a dish', async ({ page }) => {
     const dishName = `Delete Test ${Date.now()}`;
     
     await newDishPage.navigate();
@@ -190,7 +190,7 @@ test.describe('Dishes Management', () => {
     await expect(dishesPage.findDishByName(dishName)).not.toBeVisible({ timeout: 10000 });
   });
 
-  test('should display dish in view mode with all details', async ({ page }) => {
+  test('@ui should display dish in view mode with all details', async ({ page }) => {
     const dishName = `Complete View ${Date.now()}`;
     
     await newDishPage.navigate();

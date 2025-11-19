@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage, RegisterPage } from '../pages';
+import { LoginPage, RegisterPage } from '../../pages';
 
 test.describe('Authentication', () => {
   let loginPage: LoginPage;
@@ -14,7 +14,7 @@ test.describe('Authentication', () => {
     registerPage = new RegisterPage(page);
   });
 
-  test('should display login page correctly', async () => {
+  test('@ui should display login page correctly', async () => {
     await loginPage.navigate();
     
     await expect(loginPage.container).toBeVisible();
@@ -26,7 +26,7 @@ test.describe('Authentication', () => {
     await expect(loginPage.registerLink).toBeVisible();
   });
 
-  test('should display register page correctly', async () => {
+  test('@ui should display register page correctly', async () => {
     await registerPage.navigate();
     
     await expect(registerPage.container).toBeVisible();
@@ -38,7 +38,7 @@ test.describe('Authentication', () => {
     await expect(registerPage.submitButton).toBeVisible();
   });
 
-  test('should register a new user successfully', async ({ page }) => {
+  test('@uishould register a new user successfully', async ({ page }) => {
     await registerPage.navigate();
     
     const timestamp = Date.now();
@@ -55,7 +55,7 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/\/login/);
   });
 
-  test('should show error with invalid credentials', async () => {
+  test('@ui should show error with invalid credentials', async () => {
     await loginPage.navigate();
     
     await loginPage.login('invalid@example.com', 'wrongpassword');
@@ -63,7 +63,7 @@ test.describe('Authentication', () => {
     await expect(loginPage.errorMessage).toBeVisible();
   });
 
-  test('should login successfully with valid credentials', async ({ page }) => {
+  test('@ui should login successfully with valid credentials', async ({ page }) => {
     // Primero crear un usuario
     const timestamp = Date.now();
     const email = `test${timestamp}@example.com`;
@@ -86,13 +86,13 @@ test.describe('Authentication', () => {
     await expect(page).toHaveURL(/\/dishes/);
   });
 
-  test('should navigate from login to register', async ({ page }) => {
+  test('@ui should navigate from login to register', async ({ page }) => {
     await loginPage.navigate();
     await loginPage.goToRegister();
     await expect(page).toHaveURL(/\/register/);
   });
 
-  test('should navigate from register to login', async ({ page }) => {
+  test('@uishould navigate from register to login', async ({ page }) => {
     await registerPage.navigate();
     await registerPage.goToLogin();
     await expect(page).toHaveURL(/\/login/);

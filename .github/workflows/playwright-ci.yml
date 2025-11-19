@@ -1,4 +1,4 @@
-name: Playwright Tests
+name: Playwright Tests by label
 
 on:
   push:
@@ -8,7 +8,10 @@ on:
 
 jobs:
   test:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'e2e-tests'))
+    if: 
+        github.event_name == 'push' || 
+        (github.event_name == 'pull_request' && 
+        contains(join(github.event.pull_request.labels.*.name, ' '), 'e2e-'))
     name: Run Playwright tests
     runs-on: ubuntu-latest
     timeout-minutes: 60
@@ -76,14 +79,50 @@ jobs:
 
       - name: Install Playwright browsers
         run: npx playwright install --with-deps
+      # --- API tests: solo en PR con label e2e-api ---
+      - name: Run API tests
+        id: run_api
+        if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'e2e-api')
+        continue-on-error: true
+        run: npx playwright test --grep @api --reporter=html
 
-      - name: Run Playwright tests
-        run: npx playwright test --reporter=html
-      - name: Upload Playwright HTML report
-        # Se ejecuta aunque los tests fallen
-        if: always()             
+      - name: Upload Playwright API HTML report
+        if: steps.run_api.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: playwright-report
+          name: playwright-report-api
           path: playwright-report/
-          retention-days: 7      # opcional: cuántos días guardarlo
+          if-no-files-found: ignore
+          retention-days: 7
+      # --- UI tests: solo en PR con label e2e-ui ---
+      - name: Run UI tests
+        id: run_ui
+        if: github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'e2e-ui')
+        run: npx playwright test --grep @ui --reporter=html
+
+      - name: Upload Playwright UI HTML report
+        if: steps.run_ui.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-ui
+          path: playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7
+
+      # --- ALL tests: en push a main/master o PR con label e2e-all ---
+      - name: Run ALL tests
+        id: run_all
+        if: >
+          github.event_name == 'push' ||
+          (github.event_name == 'pull_request' &&
+           contains(github.event.pull_request.labels.*.name, 'e2e-all'))
+        run: npx playwright test --reporter=html
+
+      - name: Upload Playwright HTML report
+        if: steps.run_all.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report-all
+          path: playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7
