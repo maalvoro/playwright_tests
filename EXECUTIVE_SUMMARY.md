@@ -1,4 +1,4 @@
-# 🎯 Playwright Testing Framework - Resumen Ejecutivo
+# 🎯 Playwright Testing Framework - Resumen Ejecutivo.
 
 ## ✅ Estado del Proyecto: COMPLETADO
 
