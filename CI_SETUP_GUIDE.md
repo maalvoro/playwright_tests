@@ -1,4 +1,4 @@
-# 🚀 CI/CD Setup Guide - Playwright + Happy Testing
+# 🚀 CI/CD Setup Guide - Playwright + Happy Testing.
 
 ## 📋 Arquitectura CI/CD Multi-Repositorio
 
